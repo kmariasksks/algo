@@ -1,5 +1,13 @@
 def find_largest_k(numbers, k):
-    numbers.sort(reverse=True)
+    # Implement insertion sort to sort the list in descending order
+    for i in range(1, len(numbers)):
+        key = numbers[i]
+        j = i - 1
+        while j >= 0 and key > numbers[j]:
+            numbers[j + 1] = numbers[j]
+            j -= 1
+        numbers[j + 1] = key
+
     largest_k_number = numbers[k - 1]
     largest_k_index = numbers.index(largest_k_number)
     return largest_k_number, largest_k_index
