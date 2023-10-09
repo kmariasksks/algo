@@ -1,15 +1,26 @@
 import unittest
 
-from main import find_largest_k
+from main import min_speed
 
-class TestFindLargestK(unittest.TestCase):
-    def test_1(self):
-        numbers = [15, 7, 22, 9, 36, 2, 42, 18]
-        k = 3
-        result = find_largest_k(numbers, k)
-        expected_result = (22, 2)
-        self.assertEqual(result, expected_result)
+class TestMinEatingSpeed(unittest.TestCase):
+    
+    def test_example1(self):
+        piles = [3, 6, 7, 11]
+        H = 8
+        result = min_speed(piles, H)
+        self.assertEqual(result, 4)
+
+    def test_example2(self):
+        piles = [30, 11, 23, 4, 20]
+        H = 5
+        result = min_speed(piles, H)
+        self.assertEqual(result, 30)
+
+    def test_example3(self):
+        piles = [30, 11, 23, 4, 20]
+        H = 6
+        result = min_speed(piles, H)
+        self.assertEqual(result, 23)
 
 if __name__ == '__main__':
     unittest.main()
-    

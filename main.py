@@ -1,20 +1,19 @@
-def find_largest_k(numbers, k):
-    # Implement insertion sort to sort the list in descending order
-    for i in range(1, len(numbers)):
-        key = numbers[i]
-        j = i - 1
-        while j >= 0 and key > numbers[j]:
-            numbers[j + 1] = numbers[j]
-            j -= 1
-        numbers[j + 1] = key
+def min_speed(piles, H):
+    def is_possible(K):
+        hours = 0
+        for pile in piles:
+            hours += (pile + K - 1) // K
+        return hours <= H
 
-    largest_k_number = numbers[k - 1]
-    largest_k_index = numbers.index(largest_k_number)
-    return largest_k_number, largest_k_index
+    left, right = 1, max(piles)
+    while left < right:
+        mid = left + (right - left) // 2
+        if is_possible(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
 
-if __name__ == '__main__':
-    numbers = [15, 7, 22, 9, 36, 2, 42, 18]
-    k = 3
-    result = find_largest_k(numbers, k)
-
-    print(f"Вхідний масив {numbers}. Задане k = {k}. {k}-й найбільший елемент та його позиція для numbers: {result}")
+print(min_speed([3, 6, 7, 11], 8))
+print(min_speed([30, 11, 23, 4, 20], 5))
+print(min_speed([30, 11, 23, 4, 20], 6))
