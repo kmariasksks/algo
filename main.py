@@ -16,4 +16,3 @@ def min_speed(piles, H):
 
 print(min_speed([3, 6, 7, 11], 8))
 print(min_speed([30, 11, 23, 4, 20], 5))
-print(min_speed([30, 11, 23, 4, 20], 6))
