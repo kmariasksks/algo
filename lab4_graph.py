@@ -19,20 +19,24 @@ class Graph:
 
 def shortest_path(graph, start, end):
     visited = [[False for _ in range(graph.cols)] for _ in range(graph.rows)]
+    iterations = 0
 
     q = queue.Queue()
     q.put((start[0], start[1], 0))
 
     while not q.empty():
+        iterations += 1
         x, y, dist = q.get()
         if (x, y) == end:
+            print(f"Кількість ітерацій: {iterations}")
             return dist
 
         for neighbor_x, neighbor_y in graph.neighbors(x, y):
             if not visited[neighbor_x][neighbor_y]:
                 q.put((neighbor_x, neighbor_y, dist + 1))
                 visited[neighbor_x][neighbor_y] = True
-
+                
+    print(f"Кількість ітерацій: {iterations}")
     return -1
 
 with open('input.txt', 'r') as file:
