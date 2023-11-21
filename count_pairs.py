@@ -1,50 +1,61 @@
-def count_pairs(N, pair):
-    if not (0 < N < 10000):
-        raise ValueError("N should be between 0 and 10000")
-
-    graph = {}
-
-    for male, female in pair:
-        if male not in graph:
-            graph[male] = []
-        graph[male].append(female)
-
-    odd_males = set()
-    even_females = set()
-
-    for person, partner_list in graph.items():
-        if person % 2 == 1:
-            odd_males.add(person)
-        for partner in partner_list:
-            if partner % 2 == 0:
-                even_females.add(partner)
-
-    tribal_pair = len(odd_males) * len(even_females)
-
-    return tribal_pair
+def build_graph(pairs):
+    tribes = [set(pairs[0])]
+    for pair in pairs[1:]:
+        merged = False
+        for tribe in tribes:
+            if any(person in tribe for person in pair):
+                tribe.update(pair)
+                merged = True
+                break
+        if not merged:
+            tribes.append(set(pair))
+    return tribes
 
 
-def read_input_from_file(file):
+def count_possible_pairs(tribes):
+    count = 0
+    pairs = []
+    for i in range(len(tribes)):
+        for j in range(i + 1, len(tribes)):
+            for male in tribes[i]:
+                for female in tribes[j]:
+                    if male % 2 != female % 2:
+                        count += 1
+                        pairs.append(f"{male}/{female}")
+    return count, pairs
+
+
+def read_input(file):
     with open(file, 'r') as file:
-        N = int(file.readline().strip())
+        N = int(file.readline())
         if not (0 < N < 10000):
-            raise ValueError("N should be between 0 and 10000")
-        pair = [tuple(map(int, line.strip().split())) for line in file]
+            raise ValueError("0 < N < 10000")
+        pairs = [tuple(map(int, line.split())) for line in file.readlines()]
+    return N, pairs
 
-    return N, pair
 
-
-def write_output_to_file(file, result):
+def write_output(file, result):
+    count, pairs = result
     with open(file, 'w') as file:
-        file.write(str(result))
+        file.write(f"{count} (")
+        possible_pairs = ', '.join(pairs)
+        file.write(f"{possible_pairs})")
 
 
-input_file = 'input.txt'
-output_file = 'output.txt'
+def main():
+    input_file = 'input.txt'
+    output_file = 'output.txt'
 
-try:
-    N, pair = read_input_from_file(input_file)
-    result = count_pairs(N, pair)
-    write_output_to_file(output_file, result)
-except ValueError as e:
-    print(f"Error: {e}")
+    try:
+        N, pairs = read_input(input_file)
+        if not (0 < N < 10000):
+            raise ValueError("0 < N < 10000")
+        tribes = build_graph(pairs)
+        result = count_possible_pairs(tribes)
+        write_output(output_file, result)
+    except ValueError as e:
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
