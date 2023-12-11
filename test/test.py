@@ -1,33 +1,33 @@
 import unittest
-import sys
 import os
+import sys
 
-sys.path.append(os.path.abspath('D:/algo/src'))
+sys.path.append(os.path.abspath('D:/algo7/src'))
 
-from main import naive_search_last_occurrence
+from wchain import longest_chain
 
-class TestNaiveSearchLastOccurrence(unittest.TestCase):
-    def test_last_occurrence_found(self):
-        haystack = "abracadabra"
-        needle = "abra"
-        result, comparisons = naive_search_last_occurrence(haystack, needle)
-        self.assertEqual(result, 7)
-        self.assertGreater(comparisons, 0)
+class TestLongestChain(unittest.TestCase):
 
-    def test_last_occurrence_not_found(self):
-        haystack = "abracadabra"
-        needle = "xyz"
-        result, comparisons = naive_search_last_occurrence(haystack, needle)
-        self.assertEqual(result, -1)
-        self.assertGreater(comparisons, 0)
+    def test_correct_result(self):
+        words = ["cat", "bat", "at", "a"]
+        expected = 3
+        actual = longest_chain(words)
+        self.assertEqual(expected, actual)
 
-    def test_empty_needle(self):
-        haystack = "abracadabra"
-        needle = ""
-        result, comparisons = naive_search_last_occurrence(haystack, needle)
-        self.assertEqual(result, len(haystack) - 1)
-        self.assertEqual(comparisons, 0)
+    def test_invalid_number_of_words(self):
+        words = ["c"] * 10**6
+        with self.assertRaises(ValueError):
+            longest_chain(words)
 
+    def test_invalid_word_length(self):
+        words = ["c" * 51]
+        with self.assertRaises(ValueError):
+            longest_chain(words)
+
+    def test_invalid_word_characters(self):
+        words = ["Corn"]
+        with self.assertRaises(ValueError):
+            longest_chain(words)
 
 if __name__ == '__main__':
     unittest.main()
